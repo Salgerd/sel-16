@@ -25,7 +25,24 @@ public class ApplicationManager {
    public void init() {
       wd = new FirefoxDriver((new FirefoxOptions().setLegacy(true).setBinary("C:/Users/a.zelenskaya/Documents/Mozilla Firefox/firefox.exe")));
       wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-      wd.get("http://localhost/litecart/en/");
+      wd.get("http://localhost/litecart/admin/login.php?redirect_url=%2Flitecart%2Fadmin%2F");
+
+   }
+
+   public void login(String user, String password) {
+      type(By.name("username"), user);
+      type(By.name("password"), password);
+      click(By.name("login"));
+   }
+
+   private void type(By locator, String text) {
+      click(locator);
+      wd.findElement(locator).clear();
+      wd.findElement(locator).sendKeys(text);
+   }
+
+   private void click(By locator) {
+      wd.findElement(locator).click();
    }
 
    public void stop() {
@@ -33,6 +50,6 @@ public class ApplicationManager {
    }
 
    public void gotoRubberDucksPage() {
-      wd.findElement(By.linkText("Rubber Ducks")).click();
+      click(By.linkText("Rubber Ducks"));
    }
 }
