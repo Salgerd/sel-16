@@ -1,5 +1,6 @@
-package ru.stqa.les.litecart;
+package ru.stqa.les.litecart.appmanager;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -24,9 +25,14 @@ public class ApplicationManager {
    public void init() {
       wd = new FirefoxDriver((new FirefoxOptions().setLegacy(true).setBinary("C:/Users/a.zelenskaya/Documents/Mozilla Firefox/firefox.exe")));
       wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+      wd.get("http://localhost/litecart/en/");
    }
 
    public void stop() {
       wd.quit();
+   }
+
+   public void gotoRubberDucksPage() {
+      wd.findElement(By.linkText("Rubber Ducks")).click();
    }
 }

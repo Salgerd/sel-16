@@ -1,7 +1,9 @@
-package ru.stqa.les.litecart;
+package ru.stqa.les.litecart.tests;
 
+import org.openqa.selenium.By;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import ru.stqa.les.litecart.appmanager.ApplicationManager;
 
 /**
  * Created by a.zelenskaya on 22.03.2018.
