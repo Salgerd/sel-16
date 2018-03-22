@@ -9,7 +9,7 @@ public class OpenSiteTest extends TestBase {
 
     @Test
     public void testOpenSite() {
-        //app.gotoRubberDucksPage();
+        app.getNavigationHelper().gotoRubberDucksPage();
     }
 
 }

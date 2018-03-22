@@ -9,7 +9,7 @@ public class AdminTest extends TestBase{
     @Test
     public void testAdmin() {
 
-        app.login("admin", "admin");
+        app.getSessionHelper().login("admin", "admin");
     }
     
 
