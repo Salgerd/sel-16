@@ -35,8 +35,9 @@ public class ApplicationManager {
          wd = new InternetExplorerDriver();
       }
 
-      wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+     // wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
       wd.get("http://localhost/litecart/admin/login.php?redirect_url=%2Flitecart%2Fadmin%2F");
+     // sessionHelper.login("admin", "admin");
       navigationHelper = new NavigationHelper(wd);
       sessionHelper = new SessionHelper(wd);
 
