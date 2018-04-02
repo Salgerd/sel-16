@@ -14,6 +14,11 @@ public class NavigationHelper extends HelperBase {
       click(By.linkText("Rubber Ducks"));
    }
 
+   public void goToSite(){
+      wd.get("http://localhost/litecart/en/");
+   }
 
-
+   public void goToAdmin(){
+      wd.get("http://localhost/litecart/admin/login.php?redirect_url=%2Flitecart%2Fadmin%2F");
+   }
 }
