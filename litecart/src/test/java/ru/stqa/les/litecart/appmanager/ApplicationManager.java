@@ -40,16 +40,15 @@ public class ApplicationManager {
       }
 
      // wd.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-      // sessionHelper.login("admin", "admin");
+
       navigationHelper = new NavigationHelper(wd);
       sessionHelper = new SessionHelper(wd);
       helperAdmin = new HelperAdmin(wd);
 
    }
 
-   public HelperAdmin getHelperAdmin(){
-      return helperAdmin;
-   }
+
+
 
 
    public void stop() {
@@ -58,7 +57,7 @@ public class ApplicationManager {
 
    public NavigationHelper getNavigationHelper() { return navigationHelper; }
    public SessionHelper getSessionHelper() { return sessionHelper; }
-
+   public HelperAdmin getHelperAdmin(){return helperAdmin;}
 
 
 }
