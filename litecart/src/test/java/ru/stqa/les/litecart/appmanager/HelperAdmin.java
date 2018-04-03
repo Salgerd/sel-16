@@ -159,7 +159,6 @@ public class HelperAdmin extends HelperBase {
          ArrayList<String> zoneNameTextContent = new ArrayList<>(); // создаем новый массив
          getAttributeFromArray(zoneName,zoneNameTextContent,"textContent"); // заполняем массив названиями зон
          String resultZone = isAlphabeticalOrder(zoneNameTextContent); // проверяем на алфавитный порядок
-       //  System.out.println("На странице " + linksZone.get(i) + " зоны расположены " + resultZone);
       }
    }
 
