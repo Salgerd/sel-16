@@ -31,4 +31,16 @@ public class NavigationHelper extends HelperBase {
       wait = new WebDriverWait(wd,10);
    }
 
+   public  void goToAddNewProduct() {
+      click(By.linkText("Add New Product"));
+   }
+
+   public  void goToCatalog() {
+      click(By.linkText("Catalog"));
+   }
+
+
+   public void goToDuckLumen() {
+      click(By.linkText("Duck Lumen"));
+   }
 }

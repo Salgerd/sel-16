@@ -3,12 +3,15 @@ package ru.stqa.les.litecart.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
@@ -163,5 +166,96 @@ public class HelperAdmin extends HelperBase {
    }
 
 
+   public void createNewProduct() {
+
+      generalNewProduct("2018-01-01", "2018-03-20");
+      informationNewProduct();
+      priceNewProduct();
+      click(By.cssSelector("button[name='save']"));
+   }
+
+   private void priceNewProduct() {
+      click(By.linkText("Prices"));
+      pause(2000);
+      fillInput("input[name='purchase_price']", "100");
+      fillSelect("select[name='purchase_price_currency_code']", "US Dollars");
+      fillInput("input[name='prices[USD]']", "100");
+   }
+
+   private void informationNewProduct() {
+
+      click(By.linkText("Information"));
+      pause(2000);
+      fillSelect("select[name='manufacturer_id']", "ACME Corp.");
+      fillInput("input[name='short_description[en]']", "DuckDuckDuck Lumen.");
+      fillTextarea("textarea[name='description[en]']");
+   }
+
+   public void generalNewProduct(String date_from, String date_to) {
+
+      click(By.cssSelector("label input[value='1']"));
+      fillInput("input[name='name[en]']","Duck Lumen");
+      fillInput("input[name='code']", "lr001");
+      putCheckbox("input[name='categories[]'][data-name='Root']");
+      fillSelect("select[name='default_category_id']", "Root");
+      putCheckbox("input[name='product_groups[]'][value='1-2']");
+      fillInput("input[name='quantity']", "10");
+      fillSelect("select[name='quantity_unit_id']", "pcs");
+      fillSelect("select[name='delivery_status_id']", "3-5 days");
+      fillSelect("select[name='sold_out_status_id']", "Sold out");
+      attachFile("input[name='new_images[]']", "img\\duck_test.png");
+      // заполняем даты
+      type(By.cssSelector("input[name='date_valid_from']"), date_from);
+      type(By.cssSelector("input[name='date_valid_to']"), date_to);
+
+   }
+
+   public void fillInput(String locator, String text) {
+      WebElement element = wd.findElement(By.cssSelector(locator));
+      element.clear();
+      element.sendKeys(text);
+   }
+
+   public void putCheckbox(String locator) {
+      WebElement checkbox = wd.findElement(By.cssSelector(locator));
+      if (checkbox.isSelected()) {
+         return;
+      } else {
+         checkbox.click();
+      }
+   }
+
+   public void fillSelect(String locator, String selectedItem) {
+      WebElement selectElement = wd.findElement(By.cssSelector(locator));
+      Select select = new Select(selectElement);
+      //List options = select.getOptions();
+      select.selectByVisibleText(selectedItem);
+   }
+
+   public void attachFile(String locaror, String fileName) {
+      File file = new File(fileName);
+      if (file.exists()) {
+         wd.findElement(By.cssSelector(locaror)).sendKeys(file.getAbsolutePath());
+         System.out.println("Файл " + file.getAbsolutePath() + " прикреплен");
+      } else {
+         System.out.println("Файл " + file.getAbsolutePath() + " не существует");
+      }
+
+   }
+   public void pause(Integer milliseconds) {
+      try {
+         TimeUnit.MILLISECONDS.sleep(milliseconds);
+      } catch (InterruptedException e) {
+         e.printStackTrace();
+      }
+   }
+
+   public void fillTextarea(String locator) {
+      WebElement element = wd.findElement(By.cssSelector(locator));
+      element.clear();
+      String text = "Here can be your the text.";
+      element.sendKeys(text);
+
+   }
 
 }
