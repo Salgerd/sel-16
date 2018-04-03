@@ -14,7 +14,7 @@ public class LeftMenuTest extends TestBase{
     public void testLeftMenu() {
 
         app.getNavigationHelper().goToAdmin();
-        app.getSessionHelper().login("admin", "admin");
+        app.getSessionHelper().loginAdmin("admin", "admin");
         app.getHelperAdmin().clickleftmenu();
 
 

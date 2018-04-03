@@ -25,6 +25,7 @@ public class ApplicationManager {
    private String browser;
    private HelperAdmin helperAdmin;
    private HelperStore helperStore;
+   private UserHelper userHelper;
 
    public ApplicationManager(String browser) { this.browser = browser;}
 
@@ -46,7 +47,7 @@ public class ApplicationManager {
       sessionHelper = new SessionHelper(wd);
       helperAdmin = new HelperAdmin(wd);
       helperStore = new HelperStore(wd);
-
+      userHelper = new UserHelper(wd);
 
    }
 
@@ -60,6 +61,6 @@ public class ApplicationManager {
    public SessionHelper getSessionHelper() { return sessionHelper; }
    public HelperAdmin getHelperAdmin(){return helperAdmin;}
    public HelperStore getHelperStore(){return helperStore;}
-
+   public UserHelper getUserHelper(){return userHelper;}
 
 }
