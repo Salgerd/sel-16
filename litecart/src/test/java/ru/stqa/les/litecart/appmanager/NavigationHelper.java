@@ -49,4 +49,5 @@ public class NavigationHelper extends HelperBase {
       click(By.linkText("Duck Lumen"));
    }
 
+   public void goToCountries() { click(By.linkText("Countries")); }
 }

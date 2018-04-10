@@ -3,6 +3,7 @@ package ru.stqa.les.litecart.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
@@ -30,10 +32,10 @@ public class HelperAdmin extends HelperBase {
 
    int menuCol, submenuCol;
    int prodCol, stickerCol;
-   String resultZone;
+   String resultZone, mainWindow;
    WebElement prodUnit;
-   List<WebElement> prodList, stickerList;
-   List<WebElement> countrLinks;
+   List<WebElement> prodList, stickerList, countrLinks, links;
+
 
 
    private WebDriverWait wait;
@@ -257,5 +259,44 @@ public class HelperAdmin extends HelperBase {
       element.sendKeys(text);
 
    }
+
+   public void addNewCountriesClick() {
+      click(By.cssSelector("a.button"));
+   }
+
+   public void tabsListClick() {
+
+      List<WebElement> links = wd.findElements(By.cssSelector("i[class='fa fa-external-link']"));
+      String mainWindow = wd.getWindowHandle();
+
+      for (int i = 0; i < links.size(); i++) {
+
+         Set<String> oldWindows = wd.getWindowHandles();
+
+
+         links.get(i).click();
+
+
+         String newWindow = (new WebDriverWait(wd, 30))
+                 .until(new ExpectedCondition<String>() {
+                           public String apply(WebDriver driver) {
+                              Set<String> newWindowsSet = driver.getWindowHandles();
+                              newWindowsSet.removeAll(oldWindows);
+                              return newWindowsSet.size() > 0 ?
+                                      newWindowsSet.iterator().next() : null;
+                           }
+                        }
+                 );
+
+
+         wd.switchTo().window(newWindow);
+         wd.close();
+
+         wd.switchTo().window(mainWindow);
+      }
+   }
+
+
+
 
 }
