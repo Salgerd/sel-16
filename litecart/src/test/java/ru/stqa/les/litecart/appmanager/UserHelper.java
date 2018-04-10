@@ -3,13 +3,16 @@ package ru.stqa.les.litecart.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import ru.stqa.les.litecart.model.UserData;
 
-import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 /**
  * Created by a.zelenskaya on 03.04.2018.
@@ -18,17 +21,15 @@ public class UserHelper extends HelperBase {
 
    private WebDriverWait wait;
    String testString;
-   //String email;
+   List<WebElement> prodList;
+   WebElement  prodTable;
+
 
    public UserHelper(WebDriver wd) {
       super(wd);
    }
 
- /*  public void GenerateEmail() {
 
-      email = generateUniqueNumber() + "@gmail.com";
-      //System.out.println(email);
-   }*/
 
    public void fillNewUserForm(UserData userData) {
 
@@ -86,4 +87,65 @@ public class UserHelper extends HelperBase {
       Assert.assertTrue(testString.compareTo("Login")==0);
 
    }
+
+
+   public void addCartProduct() {
+
+      wd.findElement(By.cssSelector("div.image-wrapper img")).click();
+
+      // текущее количество товаров в корзине
+      int currentQuantity = getIntFromTextContent(By.cssSelector("div#cart .quantity"));
+
+      boolean size = isElementPresent("select[name='options[Size]']");
+      if (size) {
+         WebElement selectElement = wd.findElement(By.cssSelector("select[name='options[Size]'"));
+         Select select = new Select(selectElement);
+         select.selectByVisibleText("Small");
+      }
+
+      wd.findElement(By.cssSelector("button[name='add_cart_product']")).click();
+
+      (new WebDriverWait(wd, 5)).until(ExpectedConditions
+              .textToBePresentInElement(By.cssSelector("div#cart .quantity"),
+                      Integer.toString(currentQuantity + 1)));
+   }
+
+   private int getIntFromTextContent(By locator) {
+
+      String text = wd.findElement(locator)
+              .getAttribute("textContent");
+      return Integer.parseInt(text);
+
+   }
+
+   public boolean isElementPresent(String locator) {
+      try {
+         wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+         boolean result = wd.findElements(By.cssSelector(locator)).size() > 0;
+         return result;
+      } finally {
+         wd.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+      }
+   }
+
+   public void deleteCartItem() {
+
+      wd.findElement(By.id("cart")).click();
+      wait = new WebDriverWait(wd, 10);
+      wait.until(titleContains("Checkout"));
+
+      for(int n = 1; n <= 3; n++) {
+         prodTable = wait.until(presenceOfElementLocated(By.id("order_confirmation-wrapper")));
+
+         prodList = wd.findElements(By.cssSelector("li.shortcut"));
+         if(prodList.size()>0) {  prodList.get(0).click(); }
+
+         wd.findElement(By.name("remove_cart_item")).click();
+         wait = new WebDriverWait(wd, 10);
+         wait.until(stalenessOf(prodTable));
+      }
+   }
+
+
 }
+

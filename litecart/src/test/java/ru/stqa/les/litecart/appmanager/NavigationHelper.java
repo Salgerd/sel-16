@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.titleContains;
+
 /**
  * Created by a.zelenskaya on 22.03.2018.
  */
@@ -17,7 +19,10 @@ public class NavigationHelper extends HelperBase {
       click(By.linkText("Rubber Ducks"));
    }
 
-   public void goToSite(){ wd.get("http://localhost/litecart/en/");
+   public  void goToSite(){
+      wd.get("http://localhost/litecart/en/");
+      wait = new WebDriverWait(wd, 10);
+      wait.until(titleContains("Online Store"));
    }
 
    public void goToAdmin(){
@@ -43,4 +48,5 @@ public class NavigationHelper extends HelperBase {
    public void goToDuckLumen() {
       click(By.linkText("Duck Lumen"));
    }
+
 }
