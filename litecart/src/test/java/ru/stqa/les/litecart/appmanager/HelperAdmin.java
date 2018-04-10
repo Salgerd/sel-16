@@ -3,6 +3,7 @@ package ru.stqa.les.litecart.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -296,7 +297,50 @@ public class HelperAdmin extends HelperBase {
       }
    }
 
+   public void checkTheLog() {
 
+      openAllFolders();
+
+      List<WebElement> links = wd.findElements(By.cssSelector("tr.row img ~a"));
+
+      ArrayList<String> textLinks = new ArrayList<>();
+
+      getTextContentFromLinks(links, textLinks);
+
+
+      for (int i = 0; i < textLinks.size(); i++) {
+         click(By.linkText(textLinks.get(i)));
+         wd.navigate().back();
+
+
+         List<LogEntry> logs = wd.manage().logs().get("browser").getAll();
+         if (logs.size() > 0) {
+            System.out.println("Если нажать на ссылку " + textLinks.get(i)
+                    + " в логе браузера появляется сообщение:");
+            System.out.println(logs);
+         }
+      }
+   }
+
+   public void openAllFolders() {
+      List<WebElement> closedFolders;
+      // находим закрытые папки на странице
+      closedFolders = wd.findElements(By.cssSelector("i[class='fa fa-folder']"));
+      if (closedFolders.size() > 0) {
+         do {
+            click(By.cssSelector("i[class='fa fa-folder'] ~ a"));
+            closedFolders = wd.findElements(By.cssSelector("i[class='fa fa-folder']"));
+         } while (closedFolders.size() != 0);
+      }
+   }
+
+   public void getTextContentFromLinks(List<WebElement> links, ArrayList textLinks) {
+      for (int i = 0; i < links.size(); i++) {
+         String a = links.get(i).getAttribute("textContent");
+         textLinks.add(a);
+      }
+
+   }
 
 
 }
